@@ -7,7 +7,7 @@
 | orders.user_id | int4 NOT NULL | Ограничение | Обеспечивает ненулевое значение записей о пользователе в заказе |
 | orders.bonus_payment | numeric(19, 5) NOT NULL DEFAULT 0 | Ограничение и значение по умолчанию | Обеспечивает ненулевое значение записей и значение по умолчанию равное 0|
 | orders.cost | numeric(19, 5) NOT NULL DEFAULT 0  | Ограничение, значение по умолчанию | Обеспечивает ненулевое значение записей и значение по умолчанию равное 0, записи могут быть из 19 цифр, с точносью до 5 знака|
-| orders.cost | CONSTRAINT orders_check  | Ограничение | Обеспечивает равенство заказа как сумма payment + bonus_payment |
+| orders.cost | CONSTRAINT orders_check  | Дополнительное ограничение | Обеспечивает равенство заказа как сумма payment + bonus_payment |
 | orders.bonus_grant | numeric(19, 5) NOT NULL DEFAULT 0 | Ограничение, значение по умолчанию | Обеспечивает ненулевое значение записей и значение по умолчанию равное 0, записи могут быть из 19 цифр, с точносью до 5 знака|
 | orders.status | int4 NOT NULL  | Ограничение | Обеспечивает ненулевое значение записей|
 | ---------------------- | ---------------------- | ---------------------- | ------------------
@@ -18,11 +18,11 @@
 | orderitems.price | numeric(19, 5) NOT NULL DEFAULT 0 | Ограничение, значение по умолчанию | Обеспечивает ненулевое значение записей, записи могут быть из 19 цифр, с точносью до 5 знака и значение по умолчанию равное 0|
 | orderitems.discount | numeric(19, 5) NOT NULL DEFAULT 0 | Ограничение, значение по умолчанию | Обеспечивает ненулевое значение записей, записи могут быть из 19 цифр, с точносью до 5 знака и значение по умолчанию равное 0|
 | orderitems.quantity | int4 NOT NULL | Ограничение | Обеспечивает ненулевое значение записей|
-| orderitems.discount | CONSTRAINT orderitems_check  | Ограничение | Обеспечивает discount значения >=0 и меньше или равно чем price |
-| orderitems.order_id и orderitems.product_id | CONSTRAINT orderitems_order_id_product_id_key | Ограничение | Обеспечивает уникальные составные значения |
+| orderitems.discount | CONSTRAINT orderitems_check  | Дополнительное ограничение | Обеспечивает discount значения >=0 и меньше или равно чем price |
+| orderitems.order_id и orderitems.product_id | CONSTRAINT orderitems_order_id_product_id_key | Дополнительное ограничение | Обеспечивает уникальные составные значения |
 | orderitems.id | CONSTRAINT orderitems_pkey | Первичный ключ | Обеспечивает уникальность id |
-| orderitems.price | CONSTRAINT orderitems_price_check | Ограничение | Обеспечивает значения больше или равным нулю |
-| orderitems.quantity | CONSTRAINT orderitems_quantity_check | Ограничение | Обеспечивает значения больше или равным нулю |
+| orderitems.price | CONSTRAINT orderitems_price_check | Дополнительное ограничение | Обеспечивает значения больше или равным нулю |
+| orderitems.quantity | CONSTRAINT orderitems_quantity_check | Дополнительное ограничение | Обеспечивает значения больше или равным нулю |
 | orderitems.order_id | CONSTRAINT orderitems_order_id_fkey | Внешний ключ | Обеспечивает связь с таблицей orders|
 | orderitems.product_id | CONSTRAINT orderitems_product_id_fkey  | Внешний ключ | Обеспечивает связь с таблицей products|
 | ---------------------- | ---------------------- | ---------------------- | ------------------ 
@@ -34,7 +34,7 @@
 | orderstatuslog.order_id | int4 NOT NULL | Ограничение | Обеспечивает ненулевое значение записей |
 | orderstatuslog.status_id | int4 NOT NULL | Ограничение | Обеспечивает ненулевое значение записей |
 | orderstatuslog.dttm | timestamp NOT NULL | Ограничение | Обеспечивает ненулевое значение записей |
-| orderstatuslog.order_id и orderstatuslog.status_id| CONSTRAINT orderstatuslog_order_id_status_id_key | Ограничение | Обеспечивает уникальные составные значения |
+| orderstatuslog.order_id и orderstatuslog.status_id| CONSTRAINT orderstatuslog_order_id_status_id_key | Дополнительное ограничение | Обеспечивает уникальные составные значения |
 | orderstatuslog.id | CONSTRAINT orderstatuslog_pkey | Первичный ключ | Обеспечивает уникальность id|
 | orderstatuslog.order_id | CONSTRAINT orderstatuslog_order_id_fkey  | Внешний ключ | Обеспечивает связь с таблицей orders|
 | orderstatuslog.status_id | CONSTRAINT orderstatuslog_status_id_fkey  | Внешний ключ | Обеспечивает связь с таблицей orderstatuses|
