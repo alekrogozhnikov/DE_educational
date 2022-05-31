@@ -5,5 +5,6 @@
   для метрики frequency используется ``orders.user_id`` и ``orders.order_id``; </br>
   для метрики monetary_value используется ``orders.user_id`` и ``orders.cost`` </br>
 
-1. Создадим представления в схеме *analysis*.
-2. 
+1. Опишем исходные данные, их тип и ограничение и занесем информацию в ``data_quality.md``
+2. Создадим представления в схеме *analysis*.
+3. 
