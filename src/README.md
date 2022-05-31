@@ -15,3 +15,5 @@
 [tmp_rfm_monetary_value.sql](tmp_rfm_monetary_value.sql) - SQL-запрос для заполнения таблицы analysis.tmp_rfm_monetary_value
 
 [datamart_query.sql](datamart_query.sql) - SQL-запрос для заполнения витрины dm_rfm_segments
+
+[orders_view.sql](orders_view.sql) - SQL-код, который обновит представление и добавит поле status для построения ветрины
