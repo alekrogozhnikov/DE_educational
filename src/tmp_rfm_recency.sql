@@ -1,6 +1,6 @@
 select user_id,
-	count(order_id) cnt_orders,
-	ntile(5) over(order by count(order_id)) recency
+	MAX(order_ts) lasttime_orders,
+	ntile(5) over(order by MAX(order_ts), user_id) recency
 from orders
 group by user_id
-order by cnt_orders
+order by lasttime_orders, user_id
