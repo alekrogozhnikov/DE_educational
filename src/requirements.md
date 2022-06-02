@@ -1,6 +1,6 @@
 <h1 align="center">ДЕКОМПОЗИЦИЯ</h1>
 
-  Для расчета метрик и построения ветрины ``dm_rfm_segments`` будет использоваться таблица ``orders`` и ее данные:``order_id``,  ``order_ts``, ``user_id``, ``cost``:</br>
+  Для расчета метрик и построения ветрины ``dm_rfm_segments`` будет использоваться таблица ``orders`` и ее данные:``order_id``,  ``order_ts``, ``user_id``, ``cost``:</br>. Витрина будет строиться на заказах со статусом *Closed* с начала 2021 года.
   для метрики *recency* используется ``orders.user_id`` и ``orders.order_ts``; </br>
   для метрики *frequency* используется ``orders.user_id`` и ``orders.order_id``; </br>
   для метрики *monetary_value* используется ``orders.user_id`` и ``orders.cost`` </br>
