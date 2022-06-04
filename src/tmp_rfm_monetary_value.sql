@@ -1,6 +1,6 @@
 insert into analysis.tmp_rfm_monetary_value(user_id, monetary_value)
-	select user_id,
-		ntile(5) over(order by sum(cost), user_id) monetary_value
-	from analysis.orders
-	where date_part('year', order_ts) >= 2021 and status = 4
-	group by user_id
+	select u.id user_id,
+			ntile(5) over(order by sum(payment) nulls first) as monetary_value
+	from analysis.users u 
+		left join analysis.orders o on o.user_id = u.id and o.status = 4
+	group by 1
