@@ -1,26 +1,26 @@
 --------------------------------- shipping_country_rates ---------------------------------
 
--- Удалим таблицу если она есть:
+-- delete table:
 drop table if exists public.shipping_country_rates cascade;
 
--- Создадим таблицу `shipping_country_rates ` - справочник стоимости доставки в страны
+-- create table:
 create table public.shipping_country_rates (
 	shipping_country_id serial primary key,
 	shipping_country text,
 	shipping_country_base_rate numeric(14,3)
 );
 
--- Наполним таблицу `shipping_country_rates` данными:
+-- insert table:
 insert into public.shipping_country_rates (shipping_country, shipping_country_base_rate)
 select distinct shipping_country, shipping_country_base_rate 
 from public.shipping s;
 
 
 --------------------------------- shipping_agreement ---------------------------------
--- Удалим таблицу если она есть:
+-- delete table:
 drop table if exists public.shipping_agreement cascade;
 
--- Создадим таблицу `shipping_agreement ` - справочник тарифов доставки вендора по договору
+-- create table:
 create table public.shipping_agreement(
 	agreementid int primary key,
 	agreement_number text,
@@ -28,7 +28,7 @@ create table public.shipping_agreement(
 	agreement_commission numeric(14,3)
 );
 
--- Наполним таблицу `shipping_agreement` данными:
+-- insert table:
 insert into public.shipping_agreement
 select distinct (regexp_split_to_array(vendor_agreement_description, ':'))[1]::integer agreementid,
 	(regexp_split_to_array(vendor_agreement_description, ':'))[2]::text,
@@ -39,10 +39,10 @@ order by agreementid;
 
 
 --------------------------------- shipping_transfer ---------------------------------
--- Удалим таблицу если она есть:
+-- delete table:
 drop table if exists public.shipping_transfer cascade;
 
--- Создадим таблицу `shipping_transfer ` - справочник о типах доставки
+-- create table:
 create table public.shipping_transfer(
 	transfer_type_id serial primary key,
 	transfer_type text,
@@ -50,7 +50,7 @@ create table public.shipping_transfer(
 	shipping_transfer_rate numeric(14,3)
 );
 
--- Наполним таблицу `shipping_transfer` данными:
+-- insert table:
 insert into public.shipping_transfer(transfer_type, transfer_model, shipping_transfer_rate)
 select distinct (regexp_split_to_array(shipping_transfer_description, ':'))[1]::text,
 	(regexp_split_to_array(shipping_transfer_description, ':'))[2]::text,
@@ -59,10 +59,10 @@ from public.shipping;
 
 
 --------------------------------- shipping_info ---------------------------------
--- Удалим таблицу если она есть:
+-- delete table:
 drop table if exists public.shipping_info cascade;
 
--- Создадим таблицу `shipping_info `
+-- create table:
 create table public.shipping_info(
 	shippingid bigint primary key,
 	vendorid int,
@@ -73,7 +73,7 @@ create table public.shipping_info(
 	agreementid bigint references public.shipping_agreement (agreementid)
 );
 
--- Наполним таблицу `shipping_info` данными:
+-- insert table:
 insert into public.shipping_info
 select distinct
 		q_s.shippingid,
@@ -102,19 +102,19 @@ left join public.shipping_agreement s_a on (regexp_split_to_array(q_s.vendor_agr
 
 
 --------------------------------- shipping_status ---------------------------------
--- Удалим таблицу если она есть:
+-- delete table:
 drop table if exists public.shipping_status cascade;
 
--- Создадим таблицу `shipping_status `
+-- create table:
 create table public.shipping_status(
 	shippingid bigint primary key,
-	status text, --статус доставки в таблице shipping по данному shippingid. Может принимать значения in_progress — доставка в процессе, либо finished — доставка завершена--
-	state text,  --промежуточные точки заказа, которые изменяются в соответствии с обновлением информации о доставке по времени state_datetime
+	status text, --Г±ГІГ ГІГіГ± Г¤Г®Г±ГІГ ГўГЄГЁ Гў ГІГ ГЎГ«ГЁГ¶ГҐ shipping ГЇГ® Г¤Г Г­Г­Г®Г¬Гі shippingid. ГЊГ®Г¦ГҐГІ ГЇГ°ГЁГ­ГЁГ¬Г ГІГј Г§Г­Г Г·ГҐГ­ГЁГї in_progress вЂ” Г¤Г®Г±ГІГ ГўГЄГ  Гў ГЇГ°Г®Г¶ГҐГ±Г±ГҐ, Г«ГЁГЎГ® finished вЂ” Г¤Г®Г±ГІГ ГўГЄГ  Г§Г ГўГҐГ°ГёГҐГ­Г --
+	state text,  --ГЇГ°Г®Г¬ГҐГ¦ГіГІГ®Г·Г­Г»ГҐ ГІГ®Г·ГЄГЁ Г§Г ГЄГ Г§Г , ГЄГ®ГІГ®Г°Г»ГҐ ГЁГ§Г¬ГҐГ­ГїГѕГІГ±Гї Гў Г±Г®Г®ГІГўГҐГІГ±ГІГўГЁГЁ Г± Г®ГЎГ­Г®ГўГ«ГҐГ­ГЁГҐГ¬ ГЁГ­ГґГ®Г°Г¬Г Г¶ГЁГЁ Г® Г¤Г®Г±ГІГ ГўГЄГҐ ГЇГ® ГўГ°ГҐГ¬ГҐГ­ГЁ state_datetime
 	shipping_start_fact_datetime timestamp,
 	shipping_end_fact_datetime timestamp
 );
 
--- Наполним таблицу `shipping_status` данными:
+-- insert table:
 insert into public.shipping_status
 select distinct shippingid::int,
 	(first_value(status) over(partition by shippingid order by state_datetime desc))::text status,
@@ -137,7 +137,7 @@ from public.shipping q_s
 
 
 --------------------------------- shipping_datamart ---------------------------------
--- Создадим представление `shipping_datamart`
+-- create view:
 create or replace view public.shipping_datamart as
 select shippingid,
 		vendorid,
